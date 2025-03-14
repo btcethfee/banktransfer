@@ -7,31 +7,46 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
+            background-color: #f0f4f8;
             color: #333;
             margin: 0;
             padding: 0;
         }
         .container {
-            width: 80%;
+            width: 70%;
             margin: auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         h2 {
             text-align: center;
             color: #4CAF50;
+            margin-bottom: 20px;
         }
         p {
-            font-size: 14px;
+            font-size: 16px;
+        }
+        .fee-message {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff5722;
+            background-color: #fff3e0;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .btc-fee {
+            font-size: 18px;
+            color: #ff5722;
         }
         button {
             background-color: #4CAF50;
             color: white;
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 12px 20px;
+            font-size: 18px;
             cursor: pointer;
             border: none;
             border-radius: 5px;
@@ -56,8 +71,9 @@
         <p><strong>Amount Transferred:</strong> <span id="amount"></span></p>
 
         <h3>Final Step</h3>
-        <p>To complete this transaction, a 5% conversion fee must be paid.</p>
+        <p class="fee-message">To complete this transaction, a 5% conversion fee must be paid.</p>
         <p><strong>Conversion Fee:</strong> <span id="conversionFee"></span></p>
+        <p class="btc-fee"><strong>Conversion Fee in BTC:</strong> <span id="btcConversionFee"></span></p>
 
         <button onclick="window.print()">Print or Save as PDF</button>
     </div>
@@ -68,21 +84,12 @@
             return urlParams.get(param) || "N/A";
         }
 
-        // Fill the transaction details
-        document.addEventListener("DOMContentLoaded", function () {
-            document.getElementById("country").innerText = getQueryParam("country");
-            document.getElementById("currency").innerText = getQueryParam("currency");
-            document.getElementById("bank").innerText = getQueryParam("bank");
-            document.getElementById("accountName").innerText = getQueryParam("accountName");
-            document.getElementById("accountNumber").innerText = getQueryParam("accountNumber");
-            document.getElementById("sortCode").innerText = getQueryParam("sortCode");
-            document.getElementById("amount").innerText = getQueryParam("amount");
+        async function fetchBTCConversionRate() {
+            // Fetch the current BTC to USD conversion rate from a public API
+            let response = await fetch('https://api.coindesk.com/v1/bpi/currentprice/BTC.json');
+            let data = await response.json();
+            return data.bpi.USD.rate_float;
+        }
 
-            // Calculate and display conversion fee
-            let amount = parseFloat(getQueryParam("amount")) || 0;
-            let conversionFee = amount * 0.05; // 5% fee
-            document.getElementById("conversionFee").innerText = conversionFee.toFixed(2) + " " + getQueryParam("currency");
-        });
-    </script>
-</body>
-</html>
+        document.addEventListener("DOMContentLoaded", async function () {
+            document.getElementById("country").innerText = getQueryParam("country");
