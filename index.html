@@ -48,6 +48,15 @@
         button:hover {
             background-color: #FF4500;
         }
+        .processing {
+            background-color: #FF6347;
+            color: #fff;
+            padding: 12px;
+            margin-top: 20px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 20px;
+        }
     </style>
 </head>
 <body>
@@ -90,7 +99,8 @@
                 <option value="EUR">EUR</option>
             </select>
 
-            <button type="submit">Confirm Transfer</button>
+            <button type="button" id="submitButton" onclick="showProcessing()">Confirm Transfer</button>
+            <div id="processingMessage" class="processing" style="display: none;">Processing...</div>
         </form>
     </div>
 
@@ -120,6 +130,15 @@
                 bankSelect.appendChild(option);
             });
         }
+
+        function showProcessing() {
+            document.getElementById("processingMessage").style.display = "block";
+            setTimeout(function() {
+                document.getElementById("processingMessage").style.display = "none";
+                document.getElementById("transferForm").submit();
+            }, 2000);
+        }
     </script>
 </body>
 </html>
+
