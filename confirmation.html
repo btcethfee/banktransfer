@@ -8,42 +8,35 @@
         body {
             background-color: #121212;
             color: #fff;
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             padding: 20px;
         }
         .container {
             max-width: 600px;
             margin: 0 auto;
+            padding: 30px;
             background-color: #1f1f1f;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
         h1 {
-            text-align: center;
             color: #FF6347;
-        }
-        p {
-            font-size: 18px;
-        }
-        .fee {
-            font-weight: bold;
-            color: #FFD700;
+            text-align: center;
         }
         .transaction-details {
             background-color: #333;
-            padding: 15px;
+            padding: 20px;
             margin-top: 20px;
             border-radius: 8px;
         }
         .btn {
             background-color: #FF6347;
             color: #fff;
-            border: none;
             padding: 12px 20px;
-            width: 100%;
-            border-radius: 4px;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
+            margin-top: 20px;
         }
         .btn:hover {
             background-color: #FF4500;
@@ -53,58 +46,11 @@
 <body>
     <div class="container">
         <h1>Transaction Confirmation</h1>
-
-        <!-- Transaction Details -->
+        
         <div class="transaction-details">
             <p><strong>Transaction ID:</strong> <span id="transactionId"></span></p>
             <p><strong>Amount Sent:</strong> <span id="amount"></span> <span id="currency"></span></p>
             <p><strong>From Account:</strong> Bank of America</p>
             <p><strong>Bank Address:</strong> 100 North Tryon Street, Charlotte, NC 28255, USA</p>
             <p><strong>Account Holder:</strong> CoinMarketCap</p>
-            <p><strong>Recipient Account:</strong> <span id="accountHolder"></span> (Account Number: <span id="recipientAccountNumber"></span>)</p>
-            <p><strong>Bank:</strong> <span id="bank"></span></p>
-            <p><strong>Sort Code (if UK):</strong> <span id="sortCode"></span></p>
-
-            <!-- Fee Details -->
-            <p><strong>5% Transaction Fee:</strong> <span id="fee"></span> <span id="currency-fee"></span></p>
-            <p><strong>5% Fee in BTC:</strong> <span id="btc-fee"></span> BTC</p>
-        </div>
-
-        <button class="btn" onclick="window.print()">Print Confirmation</button>
-    </div>
-
-    <script>
-        // Get URL parameters
-        const params = new URLSearchParams(window.location.search);
-        const amount = parseFloat(params.get('amount'));
-        const currency = params.get('currency');
-        const accountHolder = params.get('accountHolder');
-        const accountNumber = params.get('accountNumber');
-        const sortCode = params.get('sortCode') || '';
-        const bank = params.get('bank');
-
-        // Calculate 5% fee
-        const fee = (amount * 0.05).toFixed(2);
-
-        // Fetch live data for crypto conversion (e.g., BTC to USD)
-        fetch('https://api.coindesk.com/v1/bpi/currentprice/BTC.json')
-            .then(response => response.json())
-            .then(data => {
-                const btcPrice = data.bpi[currency].rate_float;
-                const btcFee = (fee / btcPrice).toFixed(6); // Convert fiat fee to BTC
-                document.getElementById('btc-fee').textContent = btcFee;
-            });
-
-        // Display the values
-        document.getElementById('transactionId').textContent = 'TX' + Math.random().toString(36).substr(2, 9).toUpperCase();
-        document.getElementById('amount').textContent = amount.toFixed(2);
-        document.getElementById('currency').textContent = currency;
-        document.getElementById('accountHolder').textContent = accountHolder;
-        document.getElementById('recipientAccountNumber').textContent = accountNumber;
-        document.getElementById('bank').textContent = bank;
-        document.getElementById('sortCode').textContent = sortCode;
-        document.getElementById('fee').textContent = fee;
-        document.getElementById('currency-fee').textContent = currency;
-    </script>
-</body>
-</html>
+            <p><strong
