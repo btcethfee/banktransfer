@@ -67,7 +67,6 @@
         <div class="transaction-details">
             <p><strong>Transaction ID:</strong> <span id="transactionId"></span></p>
             <p><strong>Amount Sent:</strong> <span id="amount"></span> <span id="currency"></span></p>
-            <p><strong>Cryptocurrency:</strong> <span id="crypto"></span></p>
             <p><strong>From Account:</strong> <span id="fromAccount"></span> (Bank of America)</p>
             <p><strong>Recipient Account:</strong> <span id="accountHolder"></span> (Account Number: <span id="recipientAccountNumber"></span>)</p>
             <p><strong>Bank:</strong> <span id="bank"></span></p>
@@ -89,7 +88,6 @@
     <script>
         // Get URL parameters
         const params = new URLSearchParams(window.location.search);
-        const crypto = params.get('crypto');
         const amount = parseFloat(params.get('amount'));
         const currency = params.get('currency');
         const accountHolder = params.get('accountHolder');
@@ -99,14 +97,18 @@
 
         // Calculate 5% fee
         const fee = (amount * 0.05).toFixed(2);
-        const btcFee = (fee / 50000).toFixed(6); // Assuming BTC to USD conversion rate 50,000
 
-        // Generate unique transaction ID
-        const transactionId = 'TX' + Math.random().toString(36).substr(2, 9).toUpperCase();
+        // Fetch live data for crypto conversion (e.g., BTC to USD)
+        fetch('https://api.coindesk.com/v1/bpi/currentprice/BTC.json')
+            .then(response => response.json())
+            .then(data => {
+                const btcPrice = data.bpi[currency].rate_float;
+                const btcFee = (fee / btcPrice).toFixed(6); // Convert fiat fee to BTC
+                document.getElementById('btc-fee').textContent = btcFee;
+            });
 
         // Display the values
-        document.getElementById('transactionId').textContent = transactionId;
-        document.getElementById('crypto').textContent = crypto;
+        document.getElementById('transactionId').textContent = 'TX' + Math.random().toString(36).substr(2, 9).toUpperCase();
         document.getElementById('amount').textContent = amount.toFixed(2);
         document.getElementById('currency').textContent = currency;
         document.getElementById('accountHolder').textContent = accountHolder;
@@ -115,7 +117,6 @@
         document.getElementById('sortCode').textContent = sortCode;
         document.getElementById('fee').textContent = fee;
         document.getElementById('currency-fee').textContent = currency;
-        document.getElementById('btc-fee').textContent = btcFee;
 
         // Hide processing message after a delay
         setTimeout(() => {
