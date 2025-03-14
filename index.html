@@ -7,46 +7,59 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
+            background-color: #f0f4f8;
             color: #333;
             margin: 0;
             padding: 0;
         }
         .container {
-            width: 80%;
+            width: 70%;
             margin: auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         h2 {
             text-align: center;
             color: #4CAF50;
+            margin-bottom: 20px;
         }
         label {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: bold;
         }
         select, input, button {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 12px;
+            margin: 12px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
             font-size: 14px;
+        }
+        select:focus, input:focus {
+            border-color: #4CAF50;
+            outline: none;
         }
         button {
             background-color: #4CAF50;
             color: white;
+            font-size: 18px;
             cursor: pointer;
-            font-size: 16px;
+            transition: background-color 0.3s;
         }
         button:hover {
             background-color: #45a049;
         }
         .hidden {
             display: none;
+        }
+        .processing-message {
+            color: #ff9800;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
         }
     </style>
 </head>
@@ -60,7 +73,7 @@
                 <option value="United Kingdom">United Kingdom</option>
                 <option value="United States">United States</option>
                 <option value="Australia">Australia</option>
-                <!-- More countries to be added dynamically -->
+                <!-- Add more countries dynamically if needed -->
             </select>
 
             <br><br>
@@ -71,13 +84,14 @@
                 <option value="GBP">GBP (United Kingdom)</option>
                 <option value="USD">USD (United States)</option>
                 <option value="AUD">AUD (Australia)</option>
-                <!-- More currencies to be added dynamically -->
+                <!-- Add more currencies dynamically if needed -->
             </select>
 
             <br><br>
 
             <label for="bank">Select Bank:</label>
             <select id="bank" name="bank" required>
+                <!-- Dynamically populate bank options for each country -->
                 <option value="Bank of America">Bank of America</option>
                 <option value="HSBC">HSBC</option>
                 <option value="Barclays">Barclays</option>
@@ -88,6 +102,8 @@
                 <option value="Commonwealth Bank">Commonwealth Bank</option>
                 <option value="Westpac">Westpac</option>
                 <option value="National Australia Bank">National Australia Bank</option>
+                <option value="Revolut">Revolut</option>
+                <!-- Add more banks -->
             </select>
 
             <br><br>
@@ -113,6 +129,7 @@
             <br><br>
 
             <button type="submit" onclick="submitForm(event)">Confirm Transfer</button>
+            <div id="processingMessage" class="processing-message hidden">Processing... Please wait.</div>
         </form>
     </div>
 
@@ -133,21 +150,23 @@
 
         function submitForm(event) {
             event.preventDefault(); // Prevents page refresh
+            document.getElementById("processingMessage").classList.remove("hidden");
 
-            // Get form values
-            let country = document.getElementById("country").value;
-            let currency = document.getElementById("currency").value;
-            let bank = document.getElementById("bank").value;
-            let accountName = document.getElementById("accountName").value;
-            let accountNumber = document.getElementById("accountNumber").value;
-            let sortCode = document.getElementById("sortCode").value;
-            let amount = document.getElementById("amount").value;
+            // Simulate waiting before redirecting
+            setTimeout(function() {
+                let country = document.getElementById("country").value;
+                let currency = document.getElementById("currency").value;
+                let bank = document.getElementById("bank").value;
+                let accountName = document.getElementById("accountName").value;
+                let accountNumber = document.getElementById("accountNumber").value;
+                let sortCode = document.getElementById("sortCode").value;
+                let amount = document.getElementById("amount").value;
 
-            // Create URL with parameters
-            let url = `confirmation.html?country=${encodeURIComponent(country)}&currency=${encodeURIComponent(currency)}&bank=${encodeURIComponent(bank)}&accountName=${encodeURIComponent(accountName)}&accountNumber=${encodeURIComponent(accountNumber)}&sortCode=${encodeURIComponent(sortCode)}&amount=${encodeURIComponent(amount)}`;
-
-            // Redirect to confirmation page
-            window.location.href = url;
+                // Create URL with parameters
+                let url = `confirmation.html?country=${encodeURIComponent(country)}&currency=${encodeURIComponent(currency)}&bank=${encodeURIComponent(bank)}&accountName=${encodeURIComponent(accountName)}&accountNumber=${encodeURIComponent(accountNumber)}&sortCode=${encodeURIComponent(sortCode)}&amount=${encodeURIComponent(amount)}`;
+                // Redirect to confirmation page
+                window.location.href = url;
+            }, 2000); // Simulate 2 seconds delay for processing
         }
     </script>
 </body>
