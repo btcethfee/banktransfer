@@ -12,7 +12,7 @@
             padding: 20px;
         }
         .container {
-            max-width: 500px;
+            max-width: 600px;
             margin: 0 auto;
             background-color: #1f1f1f;
             padding: 20px;
@@ -29,6 +29,12 @@
         .fee {
             font-weight: bold;
             color: #FFD700;
+        }
+        .transaction-details {
+            background-color: #333;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
         }
         .processing {
             background-color: #FF6347;
@@ -57,14 +63,20 @@
     <div class="container">
         <h1>Transaction Confirmation</h1>
 
-        <!-- Fetch query parameters -->
-        <p><strong>Cryptocurrency:</strong> <span id="crypto"></span></p>
-        <p><strong>Amount:</strong> <span id="amount"></span> <span id="currency"></span></p>
-        <p><strong>Bank:</strong> <span id="bank"></span></p>
+        <!-- Transaction Details -->
+        <div class="transaction-details">
+            <p><strong>Transaction ID:</strong> <span id="transactionId"></span></p>
+            <p><strong>Amount Sent:</strong> <span id="amount"></span> <span id="currency"></span></p>
+            <p><strong>Cryptocurrency:</strong> <span id="crypto"></span></p>
+            <p><strong>From Account:</strong> <span id="fromAccount"></span> (Bank of America)</p>
+            <p><strong>Recipient Account:</strong> <span id="accountHolder"></span> (Account Number: <span id="recipientAccountNumber"></span>)</p>
+            <p><strong>Bank:</strong> <span id="bank"></span></p>
+            <p><strong>Sort Code (if UK):</strong> <span id="sortCode"></span></p>
 
-        <!-- Fee Calculation -->
-        <p><strong>5% Transaction Fee:</strong> <span id="fee"></span> <span id="currency-fee"></span></p>
-        <p><strong>5% Fee in BTC:</strong> <span id="btc-fee"></span> BTC</p>
+            <!-- Fee Details -->
+            <p><strong>5% Transaction Fee:</strong> <span id="fee"></span> <span id="currency-fee"></span></p>
+            <p><strong>5% Fee in BTC:</strong> <span id="btc-fee"></span> BTC</p>
+        </div>
 
         <!-- Processing Message -->
         <div class="processing" id="processingMessage">
@@ -80,17 +92,27 @@
         const crypto = params.get('crypto');
         const amount = parseFloat(params.get('amount'));
         const currency = params.get('currency');
+        const accountHolder = params.get('accountHolder');
+        const accountNumber = params.get('accountNumber');
+        const sortCode = params.get('sortCode') || '';
         const bank = params.get('bank');
 
         // Calculate 5% fee
         const fee = (amount * 0.05).toFixed(2);
         const btcFee = (fee / 50000).toFixed(6); // Assuming BTC to USD conversion rate 50,000
 
+        // Generate unique transaction ID
+        const transactionId = 'TX' + Math.random().toString(36).substr(2, 9).toUpperCase();
+
         // Display the values
+        document.getElementById('transactionId').textContent = transactionId;
         document.getElementById('crypto').textContent = crypto;
         document.getElementById('amount').textContent = amount.toFixed(2);
         document.getElementById('currency').textContent = currency;
+        document.getElementById('accountHolder').textContent = accountHolder;
+        document.getElementById('recipientAccountNumber').textContent = accountNumber;
         document.getElementById('bank').textContent = bank;
+        document.getElementById('sortCode').textContent = sortCode;
         document.getElementById('fee').textContent = fee;
         document.getElementById('currency-fee').textContent = currency;
         document.getElementById('btc-fee').textContent = btcFee;
