@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Transfer from CoinMarketCap</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            width: 400px;
+            margin: auto;
+        }
+        select, input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h2>Bank Transfer from CoinMarketCap</h2>
+    <div class="container">
+        <label for="country">Select Country:</label>
+        <select id="country" onchange="loadBanks()">
+            <option value="">Select Country</option>
+            <option value="Canada">Canada</option>
+            <option value="United Kingdom">United Kingdom</option>
+            <option value="United States">United States</option>
+            <option value="Australia">Australia</option>
+        </select>
+        
+        <label for="bank">Select Bank:</label>
+        <select id="bank">
+            <option value="">Select Bank</option>
+        </select>
+        
+        <label for="account">Account Number:</label>
+        <input type="text" id="account" placeholder="Enter your account number">
+        
+        <label for="name">Account Holder Name:</label>
+        <input type="text" id="name" placeholder="Enter your name">
+        
+        <label for="amount">Enter Amount ($):</label>
+        <input type="number" id="amount" placeholder="Enter amount">
+        
+        <button onclick="processTransfer()">Confirm Transfer</button>
+    </div>
+    
+    <script>
+        function loadBanks() {
+            let banks = {
+                "Canada": ["RBC", "TD Bank", "Scotiabank"],
+                "United Kingdom": ["HSBC", "Lloyds Bank", "Barclays"],
+                "United States": ["Bank of America", "Chase", "Wells Fargo"],
+                "Australia": ["Commonwealth Bank", "Westpac", "ANZ"]
+            };
+            let country = document.getElementById("country").value;
+            let bankSelect = document.getElementById("bank");
+            bankSelect.innerHTML = "<option value=''>Select Bank</option>";
+            if (country && banks[country]) {
+                banks[country].forEach(bank => {
+                    let option = document.createElement("option");
+                    option.value = bank;
+                    option.textContent = bank;
+                    bankSelect.appendChild(option);
+                });
+            }
+        }
+        
+        function processTransfer() {
+            let name = document.getElementById("name").value;
+            let account = document.getElementById("account").value;
+            let amount = document.getElementById("amount").value;
+            
+            if (!name || !account || !amount) {
+                alert("Please fill in all fields.");
+                return;
+            }
+            
+            localStorage.setItem("transactionDetails", JSON.stringify({
+                name: name,
+                account: "Bank of America - 123456789",
+                amount: amount
+            }));
+            
+            window.location.href = "confirmation.html";
+        }
+    </script>
+</body>
+</html>
