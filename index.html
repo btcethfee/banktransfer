@@ -12,7 +12,7 @@
             padding: 20px;
         }
         .container {
-            max-width: 500px;
+            max-width: 600px;
             margin: 0 auto;
             background-color: #1f1f1f;
             padding: 20px;
@@ -36,6 +36,9 @@
             color: #fff;
             border-radius: 4px;
         }
+        .bank-list {
+            display: none;
+        }
         button {
             background-color: #FF6347;
             color: #fff;
@@ -53,7 +56,15 @@
 <body>
     <div class="container">
         <h1>Crypto Transfer</h1>
-        <form action="confirmation.html" method="get">
+        <form action="confirmation.html" method="get" id="transferForm">
+            <label for="country">Country:</label>
+            <select id="country" name="country" required onchange="updateBankList()">
+                <option value="USA">USA</option>
+                <option value="Canada">Canada</option>
+                <option value="UK">UK</option>
+                <!-- Add other countries if needed -->
+            </select>
+
             <label for="crypto">Cryptocurrency:</label>
             <select id="crypto" name="crypto" required>
                 <option value="BTC">Bitcoin (BTC)</option>
@@ -71,16 +82,55 @@
                 <!-- Add more currencies here if needed -->
             </select>
 
+            <label for="accountHolder">Account Holder Name:</label>
+            <input type="text" id="accountHolder" name="accountHolder" required>
+
+            <label for="accountNumber">Account Number:</label>
+            <input type="text" id="accountNumber" name="accountNumber" required pattern="\d+" title="Only digits are allowed">
+
+            <!-- Sort code for UK only -->
+            <div id="sortCodeField" class="bank-list">
+                <label for="sortCode">Sort Code:</label>
+                <input type="text" id="sortCode" name="sortCode" pattern="\d{6}" maxlength="6" title="Sort code must be exactly 6 digits">
+            </div>
+
             <label for="bank">Select Bank:</label>
             <select id="bank" name="bank" required>
-                <option value="Barclays">Barclays</option>
                 <option value="Revolut">Revolut</option>
-                <option value="HSBC">HSBC</option>
-                <!-- Add more banks here if needed -->
+                <!-- Bank lists will update dynamically based on the country selection -->
             </select>
 
             <button type="submit">Confirm Transfer</button>
         </form>
     </div>
+
+    <script>
+        function updateBankList() {
+            const country = document.getElementById('country').value;
+            const bankSelect = document.getElementById('bank');
+            let bankOptions = [];
+
+            // Show/Hide fields based on country
+            if (country === "UK") {
+                document.getElementById("sortCodeField").style.display = "block";
+                bankOptions = ["Revolut", "Barclays", "HSBC", "Lloyds", "NatWest", "Santander", "Halifax", "TSB", "Bank of Scotland", "Yorkshire Bank", "Bank of America", "Royal Bank of Scotland", "Metro Bank", "Nationwide", "Fidelity"];
+            } else {
+                document.getElementById("sortCodeField").style.display = "none";
+                if (country === "USA") {
+                    bankOptions = ["Revolut", "Bank of America", "Chase", "Citibank", "Wells Fargo", "Capital One", "PNC", "TD Bank", "US Bank", "HSBC", "Bank of New York Mellon", "BB&T", "SunTrust", "Fidelity", "Goldman Sachs"];
+                } else if (country === "Canada") {
+                    bankOptions = ["Revolut", "Royal Bank of Canada", "TD Canada Trust", "Scotiabank", "Bank of Montreal", "CIBC", "National Bank of Canada", "Desjardins", "HSBC Canada", "Manulife Bank", "Laurentian Bank", "ATB Financial", "FirstOntario", "Alterna Bank", "Fidelity"];
+                }
+            }
+
+            bankSelect.innerHTML = '';
+            bankOptions.forEach(bank => {
+                const option = document.createElement("option");
+                option.value = bank;
+                option.textContent = bank;
+                bankSelect.appendChild(option);
+            });
+        }
+    </script>
 </body>
 </html>
