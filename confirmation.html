@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfer Confirmation</title>
+</head>
+<body>
+    <h2>Transaction Successful</h2>
+
+    <p>Your bank transfer details are as follows:</p>
+
+    <p><strong>Country:</strong> <span id="country"></span></p>
+    <p><strong>Currency:</strong> <span id="currency"></span></p>
+    <p><strong>Bank:</strong> <span id="bank"></span></p>
+    <p><strong>Account Holder:</strong> <span id="accountName"></span></p>
+    <p><strong>Account Number:</strong> <span id="accountNumber"></span></p>
+    <p><strong>Sort Code:</strong> <span id="sortCode"></span></p>
+    <p><strong>Amount Transferred:</strong> <span id="amount"></span></p>
+
+    <h3>Final Step</h3>
+    <p>To complete this transaction, a 5% conversion fee must be paid.</p>
+    <p><strong>Conversion Fee:</strong> <span id="conversionFee"></span></p>
+
+    <script>
+        function getQueryParam(param) {
+            let urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param) || "N/A";
+        }
+
+        // Fill the transaction details
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("country").innerText = getQueryParam("country");
+            document.getElementById("currency").innerText = getQueryParam("currency");
+            document.getElementById("bank").innerText = getQueryParam("bank");
+            document.getElementById("accountName").innerText = getQueryParam("accountName");
+            document.getElementById("accountNumber").innerText = getQueryParam("accountNumber");
+            document.getElementById("sortCode").innerText = getQueryParam("sortCode");
+            document.getElementById("amount").innerText = getQueryParam("amount");
+
+            // Calculate and display conversion fee
+            let amount = parseFloat(getQueryParam("amount")) || 0;
+            let conversionFee = amount * 0.05; // 5% fee
+            document.getElementById("conversionFee").innerText = conversionFee.toFixed(2) + " " + getQueryParam("currency");
+        });
+    </script>
+</body>
+</html>
