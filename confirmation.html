@@ -6,79 +6,99 @@
     <title>Transaction Confirmation</title>
     <style>
         body {
-            background-color: #121212;
-            color: #fff;
-            font-family: 'Arial', sans-serif;
-            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
         }
         .container {
-            max-width: 600px;
+            width: 80%;
             margin: 0 auto;
-            padding: 30px;
-            background-color: #1f1f1f;
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            padding: 20px;
         }
-        h1 {
-            color: #FF6347;
+        .header {
             text-align: center;
+            background-color: #2E3A59;
+            color: #fff;
+            padding: 15px 0;
         }
         .transaction-details {
-            background-color: #333;
-            padding: 20px;
-            margin-top: 20px;
+            background-color: #fff;
+            padding: 25px;
             border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        .transaction-details h2 {
+            margin-top: 0;
+            color: #2E3A59;
         }
         .transaction-details p {
-            font-size: 18px;
-            margin-bottom: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        .transaction-details p strong {
+            width: 200px;
+            display: inline-block;
         }
         .warning {
-            background-color: #FF4500;
+            background-color: #FF5722;
             color: #fff;
             padding: 15px;
-            border-radius: 5px;
-            font-size: 18px;
-            margin-top: 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-top: 30px;
+        }
+        .footer {
+            background-color: #2E3A59;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
         }
         .btn {
-            background-color: #FF6347;
-            color: #fff;
-            padding: 12px 20px;
+            background-color: #3F51B5;
+            color: white;
+            padding: 12px 25px;
             border: none;
             border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-            font-size: 18px;
+            font-size: 16px;
+            text-decoration: none;
         }
         .btn:hover {
-            background-color: #FF4500;
+            background-color: #303F9F;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Transaction Confirmation</h1>
+        <div class="header">
+            <h1>Transaction Confirmation</h1>
+        </div>
 
         <div class="transaction-details">
+            <h2>Transaction Details</h2>
             <p><strong>Sender Bank:</strong> Bank of America</p>
             <p><strong>Sender Account Holder Name:</strong> CoinMarketCap</p>
             <p><strong>Sender Bank Address:</strong> 100 North Tryon Street, Charlotte, NC 28255, USA</p>
             <p><strong>Recipient Bank:</strong> <span id="recipientBank"></span></p>
-            <p><strong>Account Holder:</strong> <span id="accountHolder"></span></p>
+            <p><strong>Account Holder Name:</strong> <span id="accountHolder"></span></p>
             <p><strong>Account Number:</strong> <span id="accountNumber"></span></p>
             <p><strong>Amount Sent:</strong> <span id="amountSent"></span> <span id="currencyType"></span></p>
         </div>
 
         <div class="warning">
-            <p><strong>Important Notice:</strong></p>
-            <p>A <strong>5% conversion fee</strong> will be charged to complete this transaction.</p>
-            <p>This fee is necessary to process the transaction and will be deducted from the total amount. Please confirm that you understand this fee before proceeding.</p>
+            <p><strong>Important Notice:</strong> A 5% conversion fee applies to this transaction. Please note that this fee is necessary to process the transaction. It will be deducted from your total amount before completion.</p>
             <p><strong>Fee Amount:</strong> <span id="feeAmount"></span> <span id="currencyTypeFee"></span></p>
-            <p><strong>Fee in BTC:</strong> <span id="feeInBTC"></span></p>
+            <p><strong>Fee in Bitcoin (BTC):</strong> <span id="feeInBTC"></span></p>
         </div>
 
-        <button class="btn" onclick="window.location.href = 'index.html';">Go Back</button>
+        <div class="footer">
+            <a href="index.html" class="btn">Go Back to Dashboard</a>
+        </div>
     </div>
 
     <script>
