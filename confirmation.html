@@ -36,15 +36,6 @@
             margin-top: 20px;
             border-radius: 8px;
         }
-        .processing {
-            background-color: #FF6347;
-            color: #fff;
-            padding: 12px;
-            margin-top: 20px;
-            border-radius: 4px;
-            text-align: center;
-            font-size: 20px;
-        }
         .btn {
             background-color: #FF6347;
             color: #fff;
@@ -67,7 +58,8 @@
         <div class="transaction-details">
             <p><strong>Transaction ID:</strong> <span id="transactionId"></span></p>
             <p><strong>Amount Sent:</strong> <span id="amount"></span> <span id="currency"></span></p>
-            <p><strong>From Account:</strong> <span id="fromAccount"></span> (Bank of America)</p>
+            <p><strong>From Account:</strong> Bank of America (Located in Dover, Delaware)</p>
+            <p><strong>Account Holder:</strong> CoinMarketCap</p>
             <p><strong>Recipient Account:</strong> <span id="accountHolder"></span> (Account Number: <span id="recipientAccountNumber"></span>)</p>
             <p><strong>Bank:</strong> <span id="bank"></span></p>
             <p><strong>Sort Code (if UK):</strong> <span id="sortCode"></span></p>
@@ -77,12 +69,7 @@
             <p><strong>5% Fee in BTC:</strong> <span id="btc-fee"></span> BTC</p>
         </div>
 
-        <!-- Processing Message -->
-        <div class="processing" id="processingMessage">
-            Processing your transfer...
-        </div>
-
-        <button class="btn" onclick="printConfirmation()">Print Confirmation</button>
+        <button class="btn" onclick="window.print()">Print Confirmation</button>
     </div>
 
     <script>
@@ -117,16 +104,6 @@
         document.getElementById('sortCode').textContent = sortCode;
         document.getElementById('fee').textContent = fee;
         document.getElementById('currency-fee').textContent = currency;
-
-        // Hide processing message after a delay
-        setTimeout(() => {
-            document.getElementById('processingMessage').style.display = 'none';
-        }, 2000);
-
-        // Print function
-        function printConfirmation() {
-            window.print();
-        }
     </script>
 </body>
 </html>
