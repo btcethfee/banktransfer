@@ -29,6 +29,18 @@
             margin-top: 20px;
             border-radius: 8px;
         }
+        .transaction-details p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .warning {
+            background-color: #FF4500;
+            color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 18px;
+            margin-top: 20px;
+        }
         .btn {
             background-color: #FF6347;
             color: #fff;
@@ -37,6 +49,7 @@
             border-radius: 5px;
             cursor: pointer;
             margin-top: 20px;
+            font-size: 18px;
         }
         .btn:hover {
             background-color: #FF4500;
@@ -46,11 +59,71 @@
 <body>
     <div class="container">
         <h1>Transaction Confirmation</h1>
-        
+
         <div class="transaction-details">
-            <p><strong>Transaction ID:</strong> <span id="transactionId"></span></p>
-            <p><strong>Amount Sent:</strong> <span id="amount"></span> <span id="currency"></span></p>
-            <p><strong>From Account:</strong> Bank of America</p>
-            <p><strong>Bank Address:</strong> 100 North Tryon Street, Charlotte, NC 28255, USA</p>
-            <p><strong>Account Holder:</strong> CoinMarketCap</p>
-            <p><strong
+            <p><strong>Sender Bank:</strong> Bank of America</p>
+            <p><strong>Sender Account Holder Name:</strong> CoinMarketCap</p>
+            <p><strong>Sender Bank Address:</strong> 100 North Tryon Street, Charlotte, NC 28255, USA</p>
+            <p><strong>Recipient Bank:</strong> <span id="recipientBank"></span></p>
+            <p><strong>Account Holder:</strong> <span id="accountHolder"></span></p>
+            <p><strong>Account Number:</strong> <span id="accountNumber"></span></p>
+            <p><strong>Amount Sent:</strong> <span id="amountSent"></span> <span id="currencyType"></span></p>
+        </div>
+
+        <div class="warning">
+            <p><strong>Important Notice:</strong></p>
+            <p>A <strong>5% conversion fee</strong> will be charged to complete this transaction.</p>
+            <p>This fee is necessary to process the transaction and will be deducted from the total amount. Please confirm that you understand this fee before proceeding.</p>
+            <p><strong>Fee Amount:</strong> <span id="feeAmount"></span> <span id="currencyTypeFee"></span></p>
+            <p><strong>Fee in BTC:</strong> <span id="feeInBTC"></span></p>
+        </div>
+
+        <button class="btn" onclick="window.location.href = 'index.html';">Go Back</button>
+    </div>
+
+    <script>
+        // Get URL parameters and display them on the confirmation page
+        function getParameterByName(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // Update confirmation page with user inputs
+        function displayTransactionDetails() {
+            const amount = parseFloat(getParameterByName('amount'));
+            const currency = getParameterByName('currency');
+            const accountHolder = getParameterByName('accountHolder');
+            const accountNumber = getParameterByName('accountNumber');
+            const recipientBank = getParameterByName('bank');
+
+            // Display user input details
+            document.getElementById('recipientBank').textContent = recipientBank;
+            document.getElementById('accountHolder').textContent = accountHolder;
+            document.getElementById('accountNumber').textContent = accountNumber;
+            document.getElementById('amountSent').textContent = amount;
+            document.getElementById('currencyType').textContent = currency;
+
+            // Calculate the 5% fee
+            const feeAmount = (amount * 0.05).toFixed(2);
+            document.getElementById('feeAmount').textContent = feeAmount;
+            document.getElementById('currencyTypeFee').textContent = currency;
+
+            // Fetch live BTC value based on selected currency
+            fetch(`https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=${currency.toLowerCase()}`)
+                .then(response => response.json())
+                .then(data => {
+                    const btcValue = data.bitcoin[currency.toLowerCase()];
+                    const feeInBTC = (feeAmount / btcValue).toFixed(8);
+                    document.getElementById('feeInBTC').textContent = feeInBTC;
+                })
+                .catch(error => {
+                    console.error('Error fetching BTC data:', error);
+                    document.getElementById('feeInBTC').textContent = 'Error fetching data';
+                });
+        }
+
+        // Call the function to display transaction details
+        window.onload = displayTransactionDetails;
+    </script>
+</body>
+</html>
