@@ -17,7 +17,7 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            width: 400px;
+            width: 350px;
             margin: auto;
         }
         select, input {
@@ -53,87 +53,78 @@
     <h2>Bank Transfer from CoinMarketCap</h2>
     <div class="container">
         <label for="country">Select Country:</label>
-        <select id="country" onchange="updateBankList()">
-            <option value="">Select</option>
+        <select id="country" onchange="updateBanks()">
             <option value="Canada">Canada</option>
-            <option value="UK">United Kingdom</option>
-            <option value="USA">United States</option>
+            <option value="United Kingdom">United Kingdom</option>
+            <option value="United States">United States</option>
             <option value="Australia">Australia</option>
         </select>
-        
-        <div id="currencyContainer" style="display: none;">
-            <label for="currency">Select Currency:</label>
-            <select id="currency">
-                <option value="GBP">GBP</option>
-                <option value="USD">USD</option>
-            </select>
-        </div>
-        
+
+        <label for="currency">Select Currency:</label>
+        <select id="currency">
+            <option value="USD">USD</option>
+            <option value="GBP">GBP</option>
+        </select>
+
         <label for="bank">Select Bank:</label>
         <select id="bank"></select>
-        
+
+        <label for="accountName">Account Name:</label>
+        <input type="text" id="accountName" placeholder="Enter your account name">
+
         <label for="accountNumber">Account Number:</label>
-        <input type="text" id="accountNumber" placeholder="Enter account number">
-        
-        <div id="sortCodeContainer" style="display: none;">
+        <input type="text" id="accountNumber" placeholder="Enter your account number">
+
+        <div id="ukDetails" style="display: none;">
             <label for="sortCode">Sort Code:</label>
             <input type="text" id="sortCode" placeholder="Enter sort code">
         </div>
-        
-        <label for="amount">Enter Amount to Send:</label>
+
+        <label for="amount">Enter Amount:</label>
         <input type="number" id="amount" placeholder="Enter amount">
-        
-        <button onclick="confirmTransfer()">Confirm Transfer</button>
+
+        <button onclick="redirectToConfirmation()">Confirm Transfer</button>
     </div>
-    
+
     <script>
-        const bankData = {
-            "Canada": ["RBC", "TD Bank", "Scotiabank", "CIBC", "BMO", "National Bank", "HSBC Canada", "Laurentian Bank", "Desjardins", "EQ Bank", "Simplii Financial", "Vancity", "Tangerine", "ATB Financial", "Meridian Credit Union"],
-            "UK": ["Barclays", "HSBC", "Lloyds", "NatWest", "Santander UK", "Royal Bank of Scotland", "TSB Bank", "Metro Bank", "Virgin Money UK", "Co-operative Bank", "Halifax", "First Direct", "Yorkshire Bank", "Coutts", "Monzo"],
-            "USA": ["Bank of America", "JPMorgan Chase", "Wells Fargo", "Citibank", "U.S. Bank", "PNC Bank", "Truist", "Goldman Sachs", "Capital One", "TD Bank USA", "HSBC USA", "Fifth Third Bank", "Regions Bank", "KeyBank", "Ally Bank"],
-            "Australia": ["Commonwealth Bank", "Westpac", "ANZ", "NAB", "Macquarie Bank", "Bendigo Bank", "Bankwest", "St. George Bank", "Suncorp Bank", "ING Australia", "ME Bank", "HSBC Australia", "UBank", "Teachers Mutual Bank", "Greater Bank"]
+        const banks = {
+            "Canada": ["RBC", "TD Canada Trust", "Scotiabank", "BMO", "CIBC"],
+            "United Kingdom": ["Barclays", "HSBC", "Lloyds", "NatWest", "Santander"],
+            "United States": ["Bank of America", "Chase", "Wells Fargo", "Citibank", "PNC"],
+            "Australia": ["Commonwealth Bank", "Westpac", "ANZ", "NAB", "Macquarie"]
         };
-        
-        function updateBankList() {
+
+        function updateBanks() {
             let country = document.getElementById("country").value;
             let bankSelect = document.getElementById("bank");
-            let currencyContainer = document.getElementById("currencyContainer");
-            let sortCodeContainer = document.getElementById("sortCodeContainer");
-            
+            let currencySelect = document.getElementById("currency");
+            let ukDetails = document.getElementById("ukDetails");
+
             bankSelect.innerHTML = "";
-            if (bankData[country]) {
-                bankData[country].forEach(bank => {
-                    let option = document.createElement("option");
-                    option.value = bank;
-                    option.textContent = bank;
-                    bankSelect.appendChild(option);
-                });
-            }
-            
-            // Show currency options if UK is selected
-            if (country === "UK") {
-                currencyContainer.style.display = "block";
-                sortCodeContainer.style.display = "block";
-            } else {
-                currencyContainer.style.display = "none";
-                sortCodeContainer.style.display = "none";
-            }
+            banks[country].forEach(bank => {
+                let option = document.createElement("option");
+                option.text = bank;
+                bankSelect.add(option);
+            });
+
+            currencySelect.style.display = (country === "United Kingdom") ? "block" : "none";
+            ukDetails.style.display = (country === "United Kingdom") ? "block" : "none";
         }
-        
-        function confirmTransfer() {
+
+        function redirectToConfirmation() {
             let country = document.getElementById("country").value;
+            let currency = document.getElementById("currency").value;
             let bank = document.getElementById("bank").value;
+            let accountName = document.getElementById("accountName").value;
             let accountNumber = document.getElementById("accountNumber").value;
             let sortCode = document.getElementById("sortCode").value;
             let amount = document.getElementById("amount").value;
-            
-            if (!country || !bank || !accountNumber || amount <= 0 || (country === "UK" && !sortCode)) {
-                alert("Please fill all required fields.");
-                return;
-            }
-            
-            window.location.href = "confirmation.html";
+
+            let url = `confirmation.html?country=${country}&currency=${currency}&bank=${bank}&accountName=${accountName}&accountNumber=${accountNumber}&sortCode=${sortCode}&amount=${amount}`;
+            window.location.href = url;
         }
+
+        updateBanks();
     </script>
 </body>
 </html>
